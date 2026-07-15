@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="OLOverse - The modular smart desktop companion ecosystem. Swappable personalities, IoT tools, keystroke injection, and retro gaming on your OLO Bit desktop companion.">
+  <title>OLOverse: The Modular Desktop Companion Ecosystem</title>
+
+  <style>
+    /* OLOverse Product Portfolio Theme Stylesheet - Self-Contained for Wix Embedding */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap');
+
+    :root {
+      /* Colors */
+      --primary: #7a00ff;
+      --primary-light: rgba(122, 0, 255, 0.1);
+      --primary-glow: rgba(122, 0, 255, 0.4);
+
+      --text-dark: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-bg-hover: rgba(255, 255, 255, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.45);
+      --glass-border-hover: rgba(255, 255, 255, 0.65);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+      --glass-shadow-hover: 0 16px 40px 0 rgba(122, 0, 255, 0.08);
+
+      /* Fonts */
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+
+      /* Robot OS Theme Color Matches */
+      --col-olobit: #3b82f6;
+      /* Blue */
+      --col-bobo: #ff9f1c;
+      /* Orange */
+      --col-glyph: #d946ef;
+      /* Magenta */
+      --col-jiggler: #10b981;
+      /* Green */
+      --col-keystrokes: #ef4444;
+      /* Red */
+      --col-oloshow: #8b5cf6;
+      /* Purple/Indigo */
+      --col-aero: #0ea5e9;
+      /* Sky */
+      --col-dash: #14b8a6;
+      /* Teal */
+      --col-pass: #f59e0b;
+      /* Amber */
+      --col-echo: #ec4899;
+      /* Pink */
+    }
+
+    /* Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-body);
+      background-color: transparent;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 1rem 0.5rem;
+    }
+
+    /* Scrollbar Customization */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(122, 0, 255, 0.15);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(122, 0, 255, 0.3);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--glass-shadow);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.15) 50%,
+          rgba(255, 255, 255, 0) 100%);
+      transform: skewX(-25deg);
+      transition: 0.75s;
+      pointer-events: none;
+    }
+
+    .glass-panel:hover::before {
+      left: 120%;
+    }
+
+    /* os-card overrides glass-card to use clean white style matching reference */
+    .os-card.glass-card {
+      background: #ffffff;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+      padding: 1rem;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .os-card.glass-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.10);
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: var(--glass-shadow);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      padding: 1.25rem;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--glass-shadow-hover);
+    }
+
+    /* Header & Typography */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      box-shadow: 0 6px 12px rgba(122, 0, 255, 0.2);
+      animation: pulseLogo 3s infinite alternate;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--text-dark);
+      background: linear-gradient(135deg, #0f172a 30%, #7a00ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.25rem;
+    }
+
+    header p.subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Grid Layouts */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1.85fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* OLO Bit Robot Emulator CSS */
+    .emulator-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 440px;
+    }
+
+    .robot-device {
+      width: 270px;
+      background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+      border-radius: 20px;
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.03),
+        0 20px 40px rgba(15, 23, 42, 0.08),
+        inset 0 2px 3px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 10px rgba(15, 23, 42, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      padding: 12px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.1s ease-out, box-shadow 0.3s;
+      user-select: none;
+    }
+
+    /* Heartbeat blinking power LED in the border */
+    .power-led {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      animation: heartbeatBlink 1.5s infinite ease-in-out;
+      z-index: 5;
+    }
+
+    @keyframes heartbeatBlink {
+
+      0%,
+      100% {
+        opacity: 0.35;
+        box-shadow: 0 0 2px rgba(16, 185, 129, 0.3);
+      }
+
+      50% {
+        opacity: 1;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 1);
+      }
+    }
+
+    .robot-device:hover {
+      box-shadow:
+        0 6px 15px rgba(0, 0, 0, 0.03),
+        0 25px 50px rgba(122, 0, 255, 0.08),
+        inset 0 2px 3px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    /* Top Section of Robot */
+    .robot-top {
+      border: 1px solid rgba(203, 213, 225, 0.5);
+      background: linear-gradient(145deg, #fafafa 0%, #f8fafc 100%);
+      border-radius: 14px;
+      padding: 16px 16px 10px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Screen Bezel */
+    .screen-bezel {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      border-radius: 10px;
+      border: 1.5px solid #94a3b8;
+      padding: 8px;
+      box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.15),
+        0 1px 2px rgba(255, 255, 255, 0.8);
+      margin-bottom: 12px;
+    }
+
+    /* OLED Screen Display */
+    .oled-screen {
+      width: 100%;
+      height: 100%;
+      background: #090a0f;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #1e293b;
+    }
+
+    /* Screen Glass Overlay */
+    .screen-glow-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 40%,
+          transparent 41%,
+          transparent 100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Hardware details under the screen */
+    .hardware-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    /* Vents: 00000 */
+    .vents-container {
+      display: flex;
+      gap: 4px;
+    }
+
+    .vent-slot {
+      width: 8px;
+      height: 24px;
+      background: #cbd5e1;
+      border-radius: 4px;
+      box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.2),
+        0 1px 1px rgba(255, 255, 255, 0.9);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Dummy circular nodes (ooo) */
+    .dots-container {
+      display: flex;
+      gap: 6px;
+    }
+
+    .indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: 1px solid #e2e8f0;
+      box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.2),
+        0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Robot Seam Divider */
+    .robot-seam {
+      height: 3px;
+      background: #cbd5e1;
+      margin: 0 4px;
+      border-radius: 2px;
+      box-shadow:
+        inset 0 1px 1px rgba(0, 0, 0, 0.15),
+        0 1.5px 1.5px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Bottom Section of Robot */
+    .robot-bottom {
+      border: 1px solid rgba(203, 213, 225, 0.5);
+      background: linear-gradient(145deg, #fafafa 0%, #f8fafc 100%);
+      border-radius: 14px;
+      height: 100px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Left touch interactions empty space */
+    .touch-sensor-left {
+      flex: 1;
+      height: 76px;
+      margin-right: 12px;
+      background: rgba(226, 232, 240, 0.25);
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #64748b;
+      position: relative;
+    }
+
+    .touch-icon {
+      width: 26px;
+      height: 26px;
+      transition: all 0.3s;
+    }
+
+    .touch-sensor-left:hover {
+      background: rgba(122, 0, 255, 0.05);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .touch-sensor-left:hover .touch-icon {
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .touch-sensor-left:active {
+      background: rgba(122, 0, 255, 0.12);
+      transform: scale(0.96);
+    }
+
+    .touch-sensor-label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 5px;
+    }
+
+    /* Right Square: WS2812B NeoPixel indicator display */
+    .neopixel-display-right {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      border-radius: 10px;
+      border: 1.5px solid #94a3b8;
+      padding: 8px;
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.12),
+        0 1px 1px rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .neopixel-screen-pad {
+      width: 100%;
+      height: 100%;
+      background: #0f172a;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .neopixel-glow-panel {
+      width: 100%;
+      height: 100%;
+      background-color: var(--pixel-color, #3b82f6);
+      opacity: 0.85;
+      box-shadow:
+        0 0 20px 2px var(--pixel-color, #3b82f6),
+        inset 0 0 8px rgba(255, 255, 255, 0.6);
+      transition: all 0.4s ease;
+      animation: neopixelPulse 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes neopixelPulse {
+      0% {
+        opacity: 0.55;
+        filter: brightness(0.85) blur(0.5px);
+      }
+
+      100% {
+        opacity: 0.95;
+        filter: brightness(1.2) blur(0px);
+      }
+    }
+
+    /* Emulator Audio Controls */
+    .emulator-controls {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn-mute {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid #cbd5e1;
+      color: var(--text-body);
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .btn-mute:hover {
+      background: #f1f5f9;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Active Dashboard Showcase Panel */
+    .showcase-display {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .os-details-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      width: fit-content;
+      margin-bottom: 0.75rem;
+      background: var(--badge-bg, rgba(59, 130, 246, 0.1));
+      color: var(--badge-color, #3b82f6);
+      border: 1px solid var(--badge-border, rgba(59, 130, 246, 0.2));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      animation: pulseBadge 2s infinite alternate;
+    }
+
+    .os-showcase-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.04em;
+      margin-bottom: 0.25rem;
+    }
+
+    .os-showcase-tagline {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .os-showcase-desc {
+      font-size: 1rem;
+      color: var(--text-body);
+      margin-bottom: 1.5rem;
+      min-height: 100px;
+    }
+
+    .os-key-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .feature-bullet-icon {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* Dashboard Navigation Action Area */
+    .dashboard-action-area {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .action-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .action-status {
+      font-size: 0.8rem;
+      color: #10b981;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .action-status::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+      animation: blinkStatus 1.5s infinite;
+    }
+
+    .btn-primary-action {
+      background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(122, 0, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(122, 0, 255, 0.28);
+      filter: brightness(1.05);
+    }
+
+    .btn-primary-action:active {
+      transform: translateY(0);
+    }
+
+    .action-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .purchase-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    .btn-secondary-action {
+      border: 1px solid rgba(122, 0, 255, 0.2);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text-dark);
+      border-radius: 12px;
+      padding: 0.7rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary-action:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(122, 0, 255, 0.1);
+    }
+
+    .ecosystem-intro {
+      max-width: 780px;
+      margin: -0.25rem auto 0.9rem auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Ecosystem Section & Cards */
+    .ecosystem-section {
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    .os-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 620px) {
+      .os-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .os-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .os-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .os-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .os-card-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: 0.5rem;
+      margin-top: 3px;
+    }
+
+    .os-card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .os-card-desc {
+      font-size: 0.83rem;
+      color: var(--text-body);
+      margin-bottom: 0.7rem;
+      line-height: 1.5;
+    }
+
+    .os-card-features-list {
+      list-style: none;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+      flex-grow: 1;
+    }
+
+    .os-card-features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      line-height: 1.4;
+    }
+
+    .os-card-features-list li::before {
+      content: '⚡';
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--btn-color, var(--primary));
+    }
+
+    .os-card-footer {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .btn-card-action {
+      flex-grow: 1;
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: block;
+      width: 100%;
+    }
+
+    .btn-card-action.solid {
+      background: var(--btn-color, var(--primary));
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 3px 8px var(--btn-shadow, rgba(122,0,255,0.18));
+    }
+
+    .btn-card-action.solid:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 6px 16px var(--btn-shadow, rgba(122,0,255,0.28));
+      transform: translateY(-1px);
+    }
+
+    /* Creator Branding / Contact Card */
+    .creator-section {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .creator-section {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .creator-details-right {
+        border-left: none !important;
+        padding-left: 0 !important;
+      }
+    }
+
+    .creator-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .creator-logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .creator-tagline {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .creator-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+      margin-bottom: 1rem;
+    }
+
+    .creator-link:hover {
+      text-decoration: underline;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: var(--text-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s;
+    }
+
+    .social-btn:hover {
+      border-color: #d946ef;
+      color: #d946ef;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(217, 70, 239, 0.12);
+    }
+
+    .social-btn.instagram svg {
+      fill: currentColor;
+    }
+
+    .company-badge {
+      font-family: var(--font-mono);
+      background: rgba(15, 23, 42, 0.05);
+      color: var(--text-dark);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    /* SVG Display States & Animations */
+    .face-element {
+      fill: #ffffff;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Blinking animations */
+    @keyframes blink {
+
+      0%,
+      90%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      95% {
+        transform: scaleY(0.1);
+      }
+    }
+
+    .eye-blink {
+      animation: blink 4s infinite;
+      transform-origin: center;
+    }
+
+    /* Breathing animation for glowing eyes */
+    @keyframes breathe {
+      0% {
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.7));
+      }
+
+      100% {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1));
+      }
+    }
+
+    .eye-glow {
+      animation: breathe 2s infinite alternate;
+    }
+
+    /* Scrolling text on OLED */
+    .oled-marquee {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      fill: #ffffff;
+      white-space: nowrap;
+      animation: scrollMarquee 10s linear infinite;
+    }
+
+    @keyframes scrollMarquee {
+      0% {
+        transform: translateX(250px);
+      }
+
+      100% {
+        transform: translateX(-280px);
+      }
+    }
+
+    /* Glitch or Matrix lines */
+    .matrix-line {
+      stroke: #ffffff;
+      stroke-dasharray: 4;
+      animation: matrixScroll 2s linear infinite;
+    }
+
+    @keyframes matrixScroll {
+      0% {
+        stroke-dashoffset: 20;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Jiggler Mouse Wave Anim */
+    .mouse-wave {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: drawLine 2.5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    }
+
+    @keyframes drawLine {
+      0% {
+        stroke-dashoffset: 100;
+      }
+
+      50% {
+        stroke-dashoffset: 0;
+      }
+
+      100% {
+        stroke-dashoffset: -100;
+      }
+    }
+
+    /* Entry Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseLogo {
+      0% {
+        box-shadow: 0 4px 10px rgba(122, 0, 255, 0.15);
+      }
+
+      100% {
+        box-shadow: 0 8px 18px rgba(122, 0, 255, 0.35);
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes pulseBadge {
+      0% {
+        opacity: 0.85;
+        transform: scale(0.98);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes blinkStatus {
+
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* Screen flashing effect when booted */
+    .screen-flash {
+      animation: flashScreenEffect 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    @keyframes flashScreenEffect {
+      0% {
+        background: #ffffff;
+      }
+
+      50% {
+        background: #888888;
+      }
+
+      100% {
+        background: #090a0f;
+      }
+    }
+
+    .mood-badge {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      display: inline-block;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="container">
+    <!-- Header Section -->
+    <header>
+      <div class="logo-container">
+        <div class="logo-icon">O</div>
+        <span
+          style="font-size: 1.35rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.03em;">OLOverse</span>
+      </div>
+      <h1>Modular Smart Desktop Companions</h1>
+      <p class="subtitle">One OLO Bit hardware platform. Flash different operating systems as your desk evolves.</p>
+    </header>
+
+    <!-- Interactive Showcase Section -->
+    <div class="main-grid">
+
+      <!-- Left Column: Interactive OLO Bit Device Emulator -->
+      <div class="glass-panel emulator-wrapper">
+        <div class="robot-device" id="robotDevice">
+          <!-- Small heartbeat blinking status LED on outer top border casing -->
+          <div class="power-led" title="Heartbeat status LED"></div>
+
+          <!-- Top Shell half -->
+          <div class="robot-top">
+            <!-- Screen bezel containing OLED -->
+            <div class="screen-bezel">
+              <div class="oled-screen" id="oledScreen">
+                <div class="screen-glow-overlay"></div>
+
+                <!-- SVG Display Panel -->
+                <svg id="screenSvg" width="100%" height="100%" viewBox="0 0 128 64">
+                  <!-- Dynamic screens injected here via JS -->
+                </svg>
+              </div>
+            </div>
+
+            <!-- Vents & Buttons indicator bar -->
+            <div class="hardware-bar">
+              <!-- Vents: 5 vertical slots (00000) -->
+              <div class="vents-container" aria-label="Device slots">
+                <div class="vent-slot"></div>
+                <div class="vent-slot"></div>
+                <div class="vent-slot"></div>
+                <div class="vent-slot"></div>
+                <div class="vent-slot"></div>
+              </div>
+
+              <!-- Dummy circular nodes (ooo) -->
+              <div class="dots-container" aria-label="Status indicators">
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seam line separator -->
+          <div class="robot-seam"></div>
+
+          <!-- Bottom Shell half -->
+          <div class="robot-bottom">
+            <!-- Left Side Empty Space is now the Touch Interaction pad -->
+            <div class="touch-sensor-left" id="touchPad"
+              title="Single tap to cycle systems. Double tap to cycle OLO Bit moods."
+              aria-label="Touch controller button">
+              <!-- Finger touch/tap icon -->
+              <svg class="touch-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="8" stroke-dasharray="3 3" opacity="0.4" />
+                <path d="M12 12m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" fill="currentColor" opacity="0.15" />
+                <path d="M10.5 16.5v-6.2a1.8 1.8 0 0 1 3.6 0v2.2" stroke-linecap="round" />
+                <path d="M14.1 10.5a1.8 1.8 0 0 1 3.6 0v3.2" stroke-linecap="round" />
+                <path d="M10.5 12.5v-3.2a1.8 1.8 0 0 0 -3.6 0v6.1a4.5 4.5 0 0 0 9 0v-.9" stroke-linecap="round" />
+              </svg>
+              <span class="touch-sensor-label">Touch Pad</span>
+            </div>
+
+            <!-- Right Side Square is now the WS2812B NeoPixel indicator display -->
+            <div class="neopixel-display-right">
+              <div class="neopixel-screen-pad">
+                <div class="neopixel-glow-panel" id="neoPixelLed"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Controls -->
+        <div class="emulator-controls">
+          <button class="btn-mute" id="btnMute">
+            <span id="muteIcon">🔊</span>
+            <span id="muteLabel">Sound On</span>
+          </button>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Tap touch pad to cycle. Double-tap for
+            moods.</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive OS Dashboard info -->
+      <div class="glass-panel showcase-display">
+        <div>
+          <div class="os-details-badge" id="showcaseBadge">
+            <span id="badgeIcon">🌌</span> <span id="badgeLabel">Flagship</span>
+          </div>
+          <h2 class="os-showcase-title" id="showcaseTitle">OLO Bit</h2>
+          <p class="os-showcase-tagline" id="showcaseTagline">The standard desktop assistant and retro gaming console.
+          </p>
+          <p class="os-showcase-desc" id="showcaseDesc">
+            Shipped as the default operating system, OLO Bit OS turns the hardware into a lively desk companion with
+            50+ OLO faces, canvas text, LED control, phone notifications, BLE map support, weather, alarms, timers, and
+            retro games.
+          </p>
+
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text-dark);">Core
+            Capabilities</h3>
+          <div class="os-key-features" id="showcaseFeatures">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Actions & Portal Links -->
+        <div class="dashboard-action-area">
+          <div class="action-label-row">
+            <span class="action-label" id="dashboardLabel">Web Controller Portal</span>
+            <span class="action-status">Connected via Emulator</span>
+          </div>
+
+          <a href="https://micromakerlabsfiles-git.github.io/OLOBit_Web_Controller/" target="_blank" class="btn-primary-action" id="showcaseActionBtn">
+            <span>Access Web Controller</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+            </svg>
+          </a>
+
+          <div class="action-hint" id="dashboardHint">
+            Requires Google Chrome, Microsoft Edge, or Opera for Web Serial support.
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- The OLOverse Ecosystem Cards Section -->
+    <div class="ecosystem-section">
+      <h2 class="section-title">Explore the OLOverse Ecosystem</h2>
+      <p class="ecosystem-intro">
+        OLOverse turns one OLO Bit gadget into nine different tools — just by flashing a different OS. Use it as a
+        flight radar, daily data dashboard, animation player, focus timer, text display, password vault, audio visualizer,
+        keystroke injector, or security token. No coding required — everything is controlled from a web browser.
+      </p>
+      <div class="os-cards-grid">
+
+        <!-- Card 1: OLO Bit -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-olobit); --btn-shadow: rgba(59, 130, 246, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Bit</span>
+              <span class="os-card-badge" style="background: rgba(59,130,246,0.1); color: var(--col-olobit);">Default</span>
+            </div>
+            <p class="os-card-desc">The default flagship experience with 50+ OLO faces, canvas text, LED control, phone notifications, BLE maps, weather, alarms, timers, and retro games.</p>
+            <ul class="os-card-features-list">
+              <li>50+ expressive OLO faces and canvas text</li>
+              <li>Desk LED control, alarms, timers, and tools</li>
+              <li>Phone notifications, weather, and BLE map support</li>
+              <li>Retro games for quick desk breaks</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLOBit_Web_Controller/" target="_blank" class="btn-card-action solid" style="background: var(--col-olobit);">Dashboard</a>
+          </div>
+        </div>
+
+
+        <!-- Card 3: OLO Glyph -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-glyph); --btn-shadow: rgba(217, 70, 239, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Glyph</span>
+              <span class="os-card-badge" style="background: rgba(217,70,239,0.1); color: var(--col-glyph);">IoT Display</span>
+            </div>
+            <p class="os-card-desc">A Wi-Fi connected smart text marquee to stream announcements, custom fonts, visual equalizers, and network parameters.</p>
+            <ul class="os-card-features-list">
+              <li>Hosted Web Dashboard (http://ologlyph.local)</li>
+              <li>High-res monospace font wrapping</li>
+              <li>13 layouts &amp; numeric bezel settings</li>
+              <li>Note-synchronized buzzer &amp; LED flashing</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Glyph/" target="_blank" class="btn-card-action solid" style="background: var(--col-glyph);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 4: OLO Jiggler -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-jiggler); --btn-shadow: rgba(16, 185, 129, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Jiggler</span>
+              <span class="os-card-badge" style="background: rgba(16,185,129,0.1); color: var(--col-jiggler);">Focus</span>
+            </div>
+            <p class="os-card-desc">Professional workspace companion integrating Pomodoro checklists and stealthy Bluetooth mouse jiggling options.</p>
+            <ul class="os-card-features-list">
+              <li>Stealthy BLE mouse emulation (5 modes)</li>
+              <li>Pomodoro focus timer &amp; checklists</li>
+              <li>WS2812B speed &amp; method sync light</li>
+              <li>Automatic clock &amp; USB sync setup</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Jiggler/" target="_blank" class="btn-card-action solid" style="background: var(--col-jiggler);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 5: OLO Keystrokes -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-keystrokes); --btn-shadow: rgba(239, 68, 68, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Keystrokes</span>
+              <span class="os-card-badge" style="background: rgba(239,68,68,0.1); color: var(--col-keystrokes);">Security</span>
+            </div>
+            <p class="os-card-desc">Low-power BLE keyboard emulator designed for IT scripts, penetration testing automated audits, and presenter shortcuts.</p>
+            <ul class="os-card-features-list">
+              <li>Standard keyboard keystroke injector</li>
+              <li>Touch navigation screen scripts menu</li>
+              <li>Local WiFi control portal (http://olokeys.local)</li>
+              <li>Stealth office clock &amp; deskpet skin</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-keystrokes/" target="_blank" class="btn-card-action solid" style="background: var(--col-keystrokes);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 6: OLO Show -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-oloshow); --btn-shadow: rgba(139, 92, 246, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Show</span>
+              <span class="os-card-badge" style="background: rgba(139,92,246,0.1); color: var(--col-oloshow);">Animation</span>
+            </div>
+            <p class="os-card-desc">An all-in-one animation toolchain. Convert videos/GIFs to dithered 1-bit OLED frames, compile custom firmware, and flash them wirelessly or via WebSerial.</p>
+            <ul class="os-card-features-list">
+              <li>1-bit dithered video/GIF converter tool</li>
+              <li>Firmware compiler GUI &amp; binary generator</li>
+              <li>Browser-based WebSerial firmware flasher</li>
+              <li>Real-time USB controller &amp; playmode syncing</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Show/" target="_blank" class="btn-card-action solid" style="background: var(--col-oloshow);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 7: OLO Aero -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-aero); --btn-shadow: rgba(14, 165, 233, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Aero</span>
+              <span class="os-card-badge" style="background: rgba(14,165,233,0.1); color: var(--col-aero);">Flight Radar</span>
+            </div>
+            <p class="os-card-desc">Aviation radar desk companion that tracks real flights with OpenSky APIs or runs offline as an animated world-clock and radar simulator.</p>
+            <ul class="os-card-features-list">
+              <li>Live flight callsign, altitude, speed, and heading</li>
+              <li>OpenSky OAuth credentials and API credit tracking</li>
+              <li>Configurable 10–50 km radar radius and map tools</li>
+              <li>OLO face alerts, LED strobes, buzzer, and clock mode</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Aero/" target="_blank" class="btn-card-action solid" style="background: var(--col-aero);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 8: OLO Dash -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-dash); --btn-shadow: rgba(20, 184, 166, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Dash</span>
+              <span class="os-card-badge" style="background: rgba(20,184,166,0.1); color: var(--col-dash);">Finance</span>
+            </div>
+            <p class="os-card-desc">Daily dashboard gadget for weather, stocks, crypto, air quality, currency rates, calendar data, and expressive OLO face animations.</p>
+            <ul class="os-card-features-list">
+              <li>15 OLO-style face animations and sleepy screensaver</li>
+              <li>Weather, AQI, holidays, daylight, stocks, and crypto</li>
+              <li>Currency rates and dual-time world city support</li>
+              <li>olodash.local dashboard with screen ordering</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Dash/" target="_blank" class="btn-card-action solid" style="background: var(--col-dash);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 9: OLO Pass -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-pass); --btn-shadow: rgba(245, 158, 11, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Pass</span>
+              <span class="os-card-badge" style="background: rgba(245,158,11,0.1); color: var(--col-pass);">Password Vault</span>
+            </div>
+            <p class="os-card-desc">A pocket-sized, offline hardware password manager. Stores up to 100 credentials on-device and types them automatically via Bluetooth — no internet required.</p>
+            <ul class="os-card-features-list">
+              <li>4-digit PIN-protected offline vault (up to 100 accounts)</li>
+              <li>BLE keyboard auto-types username + password on tap</li>
+              <li>CSV import/export and vault manager web dashboard</li>
+              <li>Auto Bluetooth disable after 2 min for security</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Pass/" target="_blank" class="btn-card-action solid" style="background: var(--col-pass);">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Card 10: OLO Echo -->
+        <div class="glass-card os-card" style="--btn-color: var(--col-echo); --btn-shadow: rgba(236, 72, 153, 0.25);">
+          <div>
+            <div class="os-card-header">
+              <span class="os-card-title">OLO Echo</span>
+              <span class="os-card-badge" style="background: rgba(236,72,153,0.1); color: var(--col-echo);">Audio Visual</span>
+            </div>
+            <p class="os-card-desc">A premium OLED audio visualizer. Converts microphone or line-in sounds into stunning real-time animations — bar graphs, VU meters, radial bursts, and more.</p>
+            <ul class="os-card-features-list">
+              <li>17+ visualizer themes with physics-accurate animations</li>
+              <li>Stereo (dual OLED) and mono single-display modes</li>
+              <li>WS2812B LED sync — light pulses with the beat</li>
+              <li>Gesture control: swipe themes, toggle LED, settings</li>
+            </ul>
+          </div>
+          <div class="os-card-footer">
+            <a href="https://micromakerlabsfiles-git.github.io/OLO-Echo/" target="_blank" class="btn-card-action solid" style="background: var(--col-echo);">Dashboard</a>
+          </div>
+        </div>
+
+      </div><!-- /os-cards-grid -->
+    </div><!-- /ecosystem-section -->
+
+        <!-- Creator Section -->
+    <div class="glass-panel creator-section">
+      <div class="creator-info">
+        <h2 class="creator-logo">Micromaker Labs</h2>
+        <p class="creator-tagline">Interactive desk pets, smart gadgets, and workspace lighting solutions for people
+          who enjoy technology with DIY.</p>
+        <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+          The OLO Bit represents the modular operating systems ecosystem behind OLOverse. Buy one hardware platform,
+          flash OLO Bit OS by default, then transform it into Aero, Dash, Show, Jiggler, Glyph, Keystrokes,
+          OLO Pass, OLO Echo, and future OS experiences through browser-based web controllers.
+        </p>
+
+        <a href="https://www.micromakerlabs.com" target="_blank" class="creator-link">
+          www.micromakerlabs.com
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="creator-details-right"
+        style="display: flex; flex-direction: column; justify-content: center; gap: 1rem; border-left: 1px solid rgba(226,232,240,0.5); padding-left: 2rem;">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Connect & Follow</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Stay updated with new OLOverse software drops, enclosure
+          3D prints, and product releases.</p>
+
+        <div class="social-links">
+          <a href="https://www.instagram.com/olobit_official" target="_blank" class="social-btn instagram"
+            aria-label="Follow OLO Bit on Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+            </svg>
+            olobit_official
+          </a>
+          <a href="https://www.instagram.com/micromakerlabs" target="_blank" class="social-btn instagram"
+            aria-label="Follow MicroMaker Labs on Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+            </svg>
+            @micromakerlabs
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // System definitions dictionary (default: OLO Bit is first)
+    const systems = [
+      {
+        id: "olobit",
+        name: "OLO Bit",
+        badge: "Flagship",
+        badgeIcon: "🌌",
+        tagline: "The flagship OLO Bit OS for everyday desk life.",
+        desc: "Shipped as the default operating system, OLO Bit OS turns the hardware into a lively desk companion with 50+ OLO faces, canvas text, LED control, phone notifications, BLE map support, weather, alarms, timers, and retro games.",
+        features: [
+          "50+ expressive OLO faces and canvas text",
+          "Desk LED control, alarms, timers, and tools",
+          "Phone notifications, weather, and BLE map support",
+          "Retro games for quick desk breaks"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLOBit_Web_Controller/",
+        dashboardLabel: "Access OLO Bit Controller",
+        dashboardHint: "Adjust alarms, composition ringtones, watch styles, or configure I2C parameters.",
+        color: "#3b82f6",
+        badgeBg: "rgba(59, 130, 246, 0.1)",
+        badgeColor: "#3b82f6",
+        badgeBorder: "rgba(59, 130, 246, 0.2)"
+      },
+      {
+        id: "glyph",
+        name: "OLO Glyph",
+        badge: "IoT Display",
+        badgeIcon: "📶",
+        tagline: "An elegant, connected smart marquee for your local network.",
+        desc: "OLO Glyph turns the device into an IoT ticker display. Connect it to your local Wi-Fi and manage text banners, font formatting, and Casio watch style interfaces directly via an embedded browser dashboard.",
+        features: [
+          "Hosted Web Dashboard (http://ologlyph.local)",
+          "U8g2 rounded fonts & text downscaling",
+          "13 clock face structures & bezel presets",
+          "Note-synchronized buzzer & LED flashing"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Glyph/",
+        dashboardLabel: "Access Glyph Controller",
+        dashboardHint: "Write live messages, coordinate beeps, or config your home timezone over network.",
+        color: "#d946ef",
+        badgeBg: "rgba(217, 70, 239, 0.1)",
+        badgeColor: "#d946ef",
+        badgeBorder: "rgba(217, 70, 239, 0.2)"
+      },
+      {
+        id: "jiggler",
+        name: "OLO Jiggler",
+        badge: "Productivity",
+        badgeIcon: "🖱️",
+        tagline: "Maintain focus, track daily habits, and keep your computer active.",
+        desc: "A specialized work-from-home companion designed to track time-boxed focus sessions while emulating standard Bluetooth mouse movements to prevent corporate timeout flags in a stealthy, hardware-independent manner.",
+        features: [
+          "Stealthy BLE mouse jiggler (5 styles)",
+          "Built-in Pomodoro focus timer (25/5 split)",
+          "Daily habit checklists & focus quotes database",
+          "Status LED lighting matches active jiggle methods"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Jiggler/",
+        dashboardLabel: "Access Jiggler Controller",
+        dashboardHint: "Configure focus intervals, sync local clocks, and adjust active status colors.",
+        color: "#10b981",
+        badgeBg: "rgba(16, 185, 129, 0.1)",
+        badgeColor: "#10b981",
+        badgeBorder: "rgba(16, 185, 129, 0.2)"
+      },
+      {
+        id: "keystrokes",
+        name: "OLO Keystrokes",
+        badge: "Security Token",
+        badgeIcon: "🔑",
+        tagline: "A compact keystroke emulator for automated audits and training.",
+        desc: "Emulates a standard Bluetooth keyboard using low-power NimBLE. Features an on-device payload script trigger and hosted web portal to execute scripting routines, IT tasks, and security audits while disguised as a normal clock.",
+        features: [
+          "Low-power NimBLE Bluetooth keyboard emulation",
+          "On-device touch controls (tap/double tap scripts)",
+          "Hosted WiFi settings dashboard (http://olokeys.local)",
+          "Stealth face interface to match office layout"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-keystrokes/",
+        dashboardLabel: "Access Keystrokes Controller",
+        dashboardHint: "Upload custom scripting payloads, compile commands, or adjust lock screensavers.",
+        color: "#ef4444",
+        badgeBg: "rgba(239, 68, 68, 0.1)",
+        badgeColor: "#ef4444",
+        badgeBorder: "rgba(239, 68, 68, 0.2)"
+      },
+      {
+        id: "oloshow",
+        name: "OLO Show",
+        badge: "Animation Toolchain",
+        badgeIcon: "🎬",
+        tagline: "Convert, flash, and control custom 1-bit OLED animations.",
+        desc: "OLO Show is a complete end-to-end toolchain that lets you convert any video or GIF into a 1-bit OLED animation, compile it into custom firmware, flash it from the browser, and control playback options in real-time.",
+        features: [
+          "Convert MP4/GIF to 1-bit OLED frame arrays",
+          "Web-based WebSerial firmware flasher",
+          "Real-time USB playback & LED pattern controller",
+          "Includes GUI script firmware builder"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Show/",
+        dashboardLabel: "Access OLO Show Tool",
+        dashboardHint: "Convert videos/GIFs, flash pre-built or custom binaries, and control playback live.",
+        color: "#8b5cf6",
+        badgeBg: "rgba(139, 92, 246, 0.1)",
+        badgeColor: "#8b5cf6",
+        badgeBorder: "rgba(139, 92, 246, 0.2)"
+      },
+      {
+        id: "oloaero",
+        name: "OLO Aero",
+        badge: "Flight Radar",
+        badgeIcon: "RAD",
+        tagline: "Track live flights around your desk with OpenSky data.",
+        desc: "OLO Aero turns OLO Bit hardware into an aviation radar desk companion. It tracks real aircraft through the OpenSky API, shows callsign, altitude, speed, heading, distance, and origin, and falls back to an offline radar simulator, world clock, LED, buzzer, and animated OLO face modes.",
+        features: [
+          "OpenSky-powered flight tracking every few minutes",
+          "Configurable 10-50 km radar radius and home marker",
+          "Flight alert screen with LED strobes and cockpit beeps",
+          "Offline radar simulator, world clock, and settings menu"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Aero/",
+        dashboardLabel: "Access OLO Aero Controller",
+        dashboardHint: "Flash firmware, upload OpenSky credentials, set home location, and run radar simulation.",
+        color: "#0ea5e9",
+        badgeBg: "rgba(14, 165, 233, 0.1)",
+        badgeColor: "#0ea5e9",
+        badgeBorder: "rgba(14, 165, 233, 0.2)"
+      },
+      {
+        id: "olodash",
+        name: "OLO Dash",
+        badge: "Daily Data",
+        badgeIcon: "DASH",
+        tagline: "A daily finance and data dashboard with OLO faces.",
+        desc: "OLO Dash is a daily dashboard OS for OLO Bit hardware. It shows time, weather, air quality, holidays, daylight times, stock prices, crypto prices, currency rates, and dual-time city data, while keeping the desk-companion feeling alive with 15 OLO-style face animations.",
+        features: [
+          "Weather, AQI, holidays, daylight, stocks, and crypto",
+          "Currency rates and dual-time world city support",
+          "15 OLO face animations and sleepy screensaver",
+          "olodash.local dashboard for screen order and settings"
+        ],
+        dashboardUrl: "https://www.olobit.in/oloverse",
+        dashboardLabel: "Explore OLO Dash",
+        dashboardHint: "Use OLOverse for availability, firmware notes, and OLO Dash setup information.",
+        color: "#14b8a6",
+        badgeBg: "rgba(20, 184, 166, 0.1)",
+        badgeColor: "#14b8a6",
+        badgeBorder: "rgba(20, 184, 166, 0.2)"
+      },
+      {
+        id: "olopass",
+        name: "OLO Pass",
+        badge: "Password Vault",
+        badgeIcon: "🔐",
+        tagline: "Your passwords, stored offline — typed automatically.",
+        desc: "OLO Pass is a pocket-sized hardware password manager. It keeps up to 100 accounts stored safely on the device with a 4-digit PIN lock, and uses Bluetooth to automatically type your username and password into any device — no internet, no cloud, no apps needed.",
+        features: [
+          "4-digit PIN protects up to 100 stored accounts",
+          "BLE keyboard auto-types credentials on tap",
+          "CSV import/export via browser web dashboard",
+          "Auto Bluetooth off after 2 min idle for security"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Pass/",
+        dashboardLabel: "Access OLO Pass Controller",
+        dashboardHint: "Manage your vault, import accounts, push text wirelessly, and configure LED modes.",
+        color: "#f59e0b",
+        badgeBg: "rgba(245, 158, 11, 0.1)",
+        badgeColor: "#f59e0b",
+        badgeBorder: "rgba(245, 158, 11, 0.2)"
+      },
+      {
+        id: "oloecho",
+        name: "OLO Echo",
+        badge: "Audio Visualizer",
+        badgeIcon: "🎵",
+        tagline: "See your music come alive on an OLED screen.",
+        desc: "OLO Echo turns OLO Bit into a live audio visualizer. Connect a microphone or audio source, and watch real-time animations respond to sound — from retro VU needles and bar graphs to radial wavebursts. The NeoPixel LED also syncs and pulses with the audio beat.",
+        features: [
+          "17+ visualizer themes with physics-accurate motion",
+          "Mono (single OLED) or stereo (dual OLED) display modes",
+          "NeoPixel LED pulses and syncs in real-time to audio",
+          "Tap controls: cycle themes, toggle LED, open settings"
+        ],
+        dashboardUrl: "https://micromakerlabsfiles-git.github.io/OLO-Echo/",
+        dashboardLabel: "Access OLO Echo Controller",
+        dashboardHint: "Flash firmware, configure audio physics model, and select visualizer themes from the browser.",
+        color: "#ec4899",
+        badgeBg: "rgba(236, 72, 153, 0.1)",
+        badgeColor: "#ec4899",
+        badgeBorder: "rgba(236, 72, 153, 0.2)"
+      }
+    ];
+
+    let currentSystemIndex = 0; // Default index is 0 (OLO Bit)
+
+    // OLO Bit moods cycle helper (now OLO Bit has the expressive eyes!)
+    const olobitMoods = ['Normal', 'Happy', 'Surprised', 'Sleepy', 'Excited', 'Love'];
+    let currentOlobitMoodIndex = 0;
+
+    // Web Audio Context & Sound Toggle
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    // Elements
+    const robotDevice = document.getElementById('robotDevice');
+    const oledScreen = document.getElementById('oledScreen');
+    const screenSvg = document.getElementById('screenSvg');
+    const neoPixelLed = document.getElementById('neoPixelLed');
+    const touchPad = document.getElementById('touchPad');
+    const btnMute = document.getElementById('btnMute');
+    const muteIcon = document.getElementById('muteIcon');
+    const muteLabel = document.getElementById('muteLabel');
+
+    // Detail Display elements
+    const showcaseBadge = document.getElementById('showcaseBadge');
+    const badgeIcon = document.getElementById('badgeIcon');
+    const badgeLabel = document.getElementById('badgeLabel');
+    const showcaseTitle = document.getElementById('showcaseTitle');
+    const showcaseTagline = document.getElementById('showcaseTagline');
+    const showcaseDesc = document.getElementById('showcaseDesc');
+    const showcaseFeatures = document.getElementById('showcaseFeatures');
+    const showcaseActionBtn = document.getElementById('showcaseActionBtn');
+    const dashboardLabel = document.getElementById('dashboardLabel');
+    const dashboardHint = document.getElementById('dashboardHint');
+
+    // Mute/Unmute logic
+    btnMute.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      if (soundEnabled) {
+        muteIcon.textContent = '🔊';
+        muteLabel.textContent = 'Sound On';
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      } else {
+        muteIcon.textContent = '🔇';
+        muteLabel.textContent = 'Sound Off';
+      }
+    });
+
+    // Synthetic Beeps Function
+    function playBeep(type) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+        else if (type === 'flash') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.setValueAtTime(450, now + 0.06);
+          osc.frequency.setValueAtTime(600, now + 0.12);
+          osc.frequency.setValueAtTime(900, now + 0.18);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.setValueAtTime(0.05, now + 0.18);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        }
+        else if (type === 'mood') {
+
+          osc.type = 'triangle';
+
+          osc.frequency.setValueAtTime(500, now);
+
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+
+          gain.gain.setValueAtTime(0.12, now);
+
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+          osc.start(now);
+
+          osc.stop(now + 0.12);
+
+        }
+
+      } catch (e) {
+
+        console.warn("Audio Context error: ", e);
+
+      }
+
+    }
+
+
+
+    // Touch Pad Interaction - preventDefault stops page scroll when tapping simulator
+
+    touchPad.addEventListener('click', (e) => {
+
+      e.preventDefault();
+
+      e.stopPropagation();
+
+      let nextIndex = (currentSystemIndex + 1) % systems.length;
+
+      selectSystem(nextIndex);
+
+    });
+
+
+
+    // Double click cycles moods if OLO Bit is selected
+
+    touchPad.addEventListener('dblclick', (e) => {
+
+      e.preventDefault();
+
+      e.stopPropagation();
+
+      const currentSystem = systems[currentSystemIndex];
+
+      if (currentSystem.id === 'olobit') {
+
+        currentOlobitMoodIndex = (currentOlobitMoodIndex + 1) % olobitMoods.length;
+
+        playBeep('mood');
+
+        renderScreen();
+
+        showcaseTagline.innerHTML = `The flagship OLO Bit OS for everyday desk life. <span class="mood-badge" style="background: rgba(59,130,246,0.1); color:#3b82f6; border-color:rgba(59,130,246,0.2)">Mood: ${olobitMoods[currentOlobitMoodIndex]}</span>`;
+
+      }
+
+    });
+
+
+
+    // Select and Boot System
+    function selectSystem(index) {
+      currentSystemIndex = index;
+      const sys = systems[currentSystemIndex];
+
+      if (sys.id === 'olobit') {
+        currentOlobitMoodIndex = 0;
+      }
+
+      playBeep('flash');
+
+      oledScreen.classList.add('screen-flash');
+      setTimeout(() => {
+        oledScreen.classList.remove('screen-flash');
+      }, 400);
+
+      robotDevice.style.transform = 'translateY(3px) scale(0.99)';
+      setTimeout(() => {
+        robotDevice.style.transform = 'none';
+      }, 100);
+
+      renderScreen();
+      updateNeoPixel();
+      updateDetailsPanel();
+    }
+
+    // Update NeoPixel glow matching OS status
+    function updateNeoPixel() {
+      const sys = systems[currentSystemIndex];
+      neoPixelLed.style.setProperty('--pixel-color', sys.color);
+    }
+
+    // Render OLED Graphics based on selected system (Pure Monochrome B&W)
+    function renderScreen() {
+      const sys = systems[currentSystemIndex];
+      let innerHTML = '';
+
+      if (sys.id === 'olobit') {
+        // OLO Bit gets the expressive physics-driven eyes (Monochrome White)
+        const mood = olobitMoods[currentOlobitMoodIndex];
+
+        let leftEyePath = '';
+        let rightEyePath = '';
+        let mouthPath = '';
+
+        switch (mood) {
+          case 'Normal':
+            leftEyePath = `<rect class="face-element eye-blink eye-glow" x="25" y="18" width="22" height="28" rx="10" fill="#ffffff" />`;
+            rightEyePath = `<rect class="face-element eye-blink eye-glow" x="81" y="18" width="22" height="28" rx="10" fill="#ffffff" />`;
+            mouthPath = `<path class="face-element" d="M 58 40 Q 64 45 70 40" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round" />`;
+            break;
+          case 'Happy':
+            leftEyePath = `<path class="face-element eye-glow" d="M 22 34 Q 36 16 50 34" stroke="#ffffff" stroke-width="5.5" fill="none" stroke-linecap="round" />`;
+            rightEyePath = `<path class="face-element eye-glow" d="M 78 34 Q 92 16 106 34" stroke="#ffffff" stroke-width="5.5" fill="none" stroke-linecap="round" />`;
+            mouthPath = `<path class="face-element" d="M 54 38 Q 64 47 74 38" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" />`;
+            break;
+          case 'Surprised':
+            leftEyePath = `<circle class="face-element eye-glow" cx="36" cy="32" r="14" fill="#ffffff" />`;
+            rightEyePath = `<circle class="face-element eye-glow" cx="92" cy="32" r="14" fill="#ffffff" />`;
+            mouthPath = `<circle class="face-element" cx="64" cy="40" r="4.5" fill="#ffffff" />`;
+            break;
+          case 'Sleepy':
+            leftEyePath = `<rect class="face-element eye-glow" x="22" y="28" width="28" height="6" rx="3" fill="#ffffff" />`;
+            rightEyePath = `<rect class="face-element eye-glow" x="78" y="28" width="28" height="6" rx="3" fill="#ffffff" />`;
+            mouthPath = `<path class="face-element" d="M 58 36 H 70" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" />`;
+            break;
+          case 'Excited':
+            leftEyePath = `<polygon class="face-element eye-glow" points="22,36 36,22 50,36" fill="#ffffff" />`;
+            rightEyePath = `<polygon class="face-element eye-glow" points="78,36 92,22 106,36" fill="#ffffff" />`;
+            mouthPath = `<path class="face-element" d="M 52 37 Q 64 51 76 37 Z" fill="#ffffff" />`;
+            break;
+          case 'Love':
+            leftEyePath = `<path class="face-element eye-glow" d="M 36 36 L 32 32 A 6 6 0 0 1 40 22 A 6 6 0 0 1 48 32 Z" fill="#ffffff" />`;
+            rightEyePath = `<path class="face-element eye-glow" d="M 92 36 L 88 32 A 6 6 0 0 1 96 22 A 6 6 0 0 1 104 32 Z" fill="#ffffff" />`;
+            mouthPath = `<path class="face-element" d="M 58 40 Q 64 44 70 40" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" />`;
+            break;
+        }
+
+        innerHTML = `
+          <g>
+            ${leftEyePath}
+            ${rightEyePath}
+            ${mouthPath}
+          </g>
+        `;
+      }
+      else if (sys.id === 'glyph') {
+        // Glyph displays blinking "BUSY" text in the center and sound waves at the bottom (no clock)
+        innerHTML = `
+          <!-- Outer border -->
+          <rect x="2" y="2" width="124" height="60" rx="4" fill="none" stroke="#ffffff" stroke-width="1" />
+          
+          <!-- Blinking "BUSY" Text -->
+          <text x="64" y="36" font-family="var(--font-mono)" font-size="20" fill="#ffffff" font-weight="bold" text-anchor="middle">
+            BUSY
+            <animate attributeName="opacity" values="0.15;1;0.15" dur="1.2s" repeatCount="indefinite" />
+          </text>
+          
+          <!-- Equalizer waves at the bottom (Clock removed) -->
+          <g fill="#ffffff" opacity="0.85">
+            <rect x="36" y="44" width="4" height="10"><animate attributeName="height" values="4;12;4" dur="0.8s" repeatCount="indefinite" /></rect>
+            <rect x="43" y="44" width="4" height="12"><animate attributeName="height" values="8;14;8" dur="1s" repeatCount="indefinite" /></rect>
+            <rect x="50" y="44" width="4" height="11"><animate attributeName="height" values="11;5;11" dur="0.6s" repeatCount="indefinite" /></rect>
+            <rect x="57" y="44" width="4" height="9"><animate attributeName="height" values="3;10;3" dur="1.2s" repeatCount="indefinite" /></rect>
+            <rect x="64" y="44" width="4" height="13"><animate attributeName="height" values="13;2;13" dur="0.75s" repeatCount="indefinite" /></rect>
+            <rect x="71" y="44" width="4" height="10"><animate attributeName="height" values="5;12;5" dur="0.9s" repeatCount="indefinite" /></rect>
+            <rect x="78" y="44" width="4" height="12"><animate attributeName="height" values="9;14;9" dur="1.1s" repeatCount="indefinite" /></rect>
+            <rect x="85" y="44" width="4" height="8"><animate attributeName="height" values="2;9;2" dur="0.7s" repeatCount="indefinite" /></rect>
+          </g>
+        `;
+      }
+      else if (sys.id === 'jiggler') {
+        innerHTML = `
+          <text x="12" y="24" font-family="var(--font-mono)" font-size="14" fill="#ffffff" font-weight="bold">FOCUS: 24:59</text>
+          <text x="12" y="36" font-family="var(--font-sans)" font-size="7" fill="rgba(255,255,255,0.7)">MODE: BLE STEALTH MOUSE</text>
+          
+          <path class="mouse-wave" d="M 12 50 C 30 35, 40 60, 60 45 C 80 30, 90 60, 116 50" />
+          
+          <g transform="translate(100, 10)">
+            <polygon points="0,0 4,10 6,8 9,11 11,9 8,6 10,4" fill="#ffffff">
+              <animate attributeName="opacity" values="0.2;1;0.2" dur="1.5s" repeatCount="indefinite" />
+            </polygon>
+          </g>
+        `;
+      }
+      else if (sys.id === 'keystrokes') {
+        innerHTML = `
+          <text x="8" y="16" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">OLO KEYSTROKES</text>
+          <text x="88" y="15" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[ARMED]</text>
+          
+          <text x="8" y="28" font-family="var(--font-mono)" font-size="7" fill="#ffffff">> CONNECTING NimBLE...</text>
+          <text x="8" y="38" font-family="var(--font-mono)" font-size="7" fill="#ffffff">> INJECT: /PAYLOAD_01.TXT</text>
+          
+          <rect x="8" y="44" width="70" height="4" rx="2" fill="#1e293b" />
+          <rect x="8" y="44" width="45" height="4" rx="2" fill="#ffffff">
+            <animate attributeName="width" values="10;70;10" dur="4s" repeatCount="indefinite" />
+          </rect>
+          
+          <rect x="96" y="28" width="22" height="14" rx="3" fill="none" stroke="#ffffff" stroke-width="1.5" />
+          <line x1="100" y1="35" x2="114" y2="35" stroke="#ffffff" stroke-width="2" stroke-dasharray="2" />
+          
+          <line x1="88" y1="20" x2="88" y2="60" class="matrix-line" />
+          <line x1="120" y1="10" x2="120" y2="50" class="matrix-line" />
+        `;
+      }
+      else if (sys.id === 'oloshow') {
+        innerHTML = `
+          <!-- OLO Show screen: 🎬 OLO SHOW and a playing frame or film reel/clapper representation -->
+          <text x="8" y="14" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">🎬 OLO SHOW</text>
+          <text x="92" y="13" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[PLAYING]</text>
+          
+          <!-- Outer video frame box -->
+          <rect x="8" y="20" width="112" height="38" rx="2" fill="none" stroke="#ffffff" stroke-width="1" />
+          
+          <!-- Clapper board / film visual element -->
+          <g fill="#ffffff">
+            <!-- Film strip borders with slots -->
+            <rect x="12" y="24" width="8" height="30" fill="none" stroke="#ffffff" stroke-width="0.5" />
+            <rect x="14" y="26" width="4" height="4" />
+            <rect x="14" y="32" width="4" height="4" />
+            <rect x="14" y="38" width="4" height="4" />
+            <rect x="14" y="44" width="4" height="4" />
+
+            <!-- Playing video frame indicator: a bouncing triangle and waves -->
+            <polygon points="45,34 45,44 55,39">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="1s" repeatCount="indefinite" />
+            </polygon>
+            <text x="62" y="42" font-family="var(--font-mono)" font-size="8" fill="#ffffff">FRAME: 184</text>
+            
+            <!-- Small sound equalizer bar inside the frame -->
+            <rect x="96" y="28" width="3" height="15"><animate attributeName="height" values="4;15;4" dur="0.6s" repeatCount="indefinite" /></rect>
+            <rect x="101" y="28" width="3" height="15"><animate attributeName="height" values="12;5;12" dur="0.9s" repeatCount="indefinite" /></rect>
+            <rect x="106" y="28" width="3" height="15"><animate attributeName="height" values="8;14;8" dur="0.7s" repeatCount="indefinite" /></rect>
+          </g>
+        `;
+      }
+      else if (sys.id === 'oloaero') {
+        innerHTML = `
+          <text x="8" y="13" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">OLO AERO</text>
+          <text x="84" y="13" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[LIVE]</text>
+
+          <circle cx="64" cy="36" r="22" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+          <circle cx="64" cy="36" r="11" fill="none" stroke="#ffffff" stroke-width="0.7" opacity="0.45" />
+          <line x1="64" y1="14" x2="64" y2="58" stroke="#ffffff" stroke-width="0.5" opacity="0.35" />
+          <line x1="42" y1="36" x2="86" y2="36" stroke="#ffffff" stroke-width="0.5" opacity="0.35" />
+          <line x1="64" y1="36" x2="86" y2="25" stroke="#ffffff" stroke-width="1.5">
+            <animateTransform attributeName="transform" type="rotate" from="0 64 36" to="360 64 36" dur="4s" repeatCount="indefinite" />
+          </line>
+          <polygon points="84,23 90,27 82,30" fill="#ffffff">
+            <animate attributeName="opacity" values="0.3;1;0.3" dur="1.1s" repeatCount="indefinite" />
+          </polygon>
+          <text x="8" y="59" font-family="var(--font-mono)" font-size="6.5" fill="#ffffff">AI742  31KM  FL320</text>
+        `;
+      }
+      else if (sys.id === 'olodash') {
+        innerHTML = `
+          <text x="8" y="13" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">OLO DASH</text>
+          <text x="86" y="13" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[DATA]</text>
+
+          <rect x="8" y="20" width="34" height="15" rx="2" fill="none" stroke="#ffffff" stroke-width="1" />
+          <text x="14" y="31" font-family="var(--font-mono)" font-size="7" fill="#ffffff">BTC</text>
+          <path d="M 50 32 L 58 24 L 66 28 L 74 18 L 84 23" fill="none" stroke="#ffffff" stroke-width="1.5" />
+          <polygon points="84,23 79,22 82,27" fill="#ffffff" />
+
+          <text x="8" y="46" font-family="var(--font-mono)" font-size="7" fill="#ffffff">WX 28C  AQI 42</text>
+          <text x="8" y="57" font-family="var(--font-mono)" font-size="7" fill="#ffffff">USD/INR 83.4  NASDAQ +0.8</text>
+          <circle cx="104" cy="28" r="8" fill="none" stroke="#ffffff" stroke-width="2">
+            <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <path d="M 98 42 Q 104 47 110 42" stroke="#ffffff" stroke-width="1.7" fill="none" stroke-linecap="round" />
+        `;
+      }
+      else if (sys.id === 'olopass') {
+        innerHTML = `
+          <text x="8" y="13" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">OLO PASS</text>
+          <text x="88" y="13" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[LOCKED]</text>
+
+          <!-- Keyhole icon -->
+          <circle cx="64" cy="28" r="9" fill="none" stroke="#ffffff" stroke-width="2" />
+          <rect x="60" y="30" width="8" height="10" rx="1" fill="#ffffff" />
+          <rect x="62" y="26" width="4" height="8" rx="2" fill="#ffffff" />
+
+          <!-- PIN dots -->
+          <g fill="none" stroke="#ffffff" stroke-width="1.5">
+            <circle cx="44" cy="52" r="3.5" />
+            <circle cx="54" cy="52" r="3.5" fill="#ffffff" />
+            <circle cx="64" cy="52" r="3.5" />
+            <circle cx="74" cy="52" r="3.5" />
+          </g>
+          <text x="8" y="58" font-family="var(--font-mono)" font-size="5.5" fill="rgba(255,255,255,0.5)">ENTER PIN TO UNLOCK</text>
+        `;
+      }
+      else if (sys.id === 'oloecho') {
+        innerHTML = `
+          <text x="8" y="13" font-family="var(--font-mono)" font-size="8" fill="#ffffff" font-weight="bold">OLO ECHO</text>
+          <text x="86" y="13" font-family="var(--font-sans)" font-size="6" fill="rgba(255,255,255,0.75)">[LIVE]</text>
+
+          <!-- VU bar graph visualizer -->
+          <g fill="#ffffff">
+            <rect x="12" y="24" width="5" height="32"><animate attributeName="height" values="8;32;12;28;8" dur="1.2s" repeatCount="indefinite" /><animate attributeName="y" values="48;24;44;28;48" dur="1.2s" repeatCount="indefinite" /></rect>
+            <rect x="20" y="28" width="5" height="28"><animate attributeName="height" values="20;10;30;14;20" dur="0.9s" repeatCount="indefinite" /><animate attributeName="y" values="36;46;26;42;36" dur="0.9s" repeatCount="indefinite" /></rect>
+            <rect x="28" y="20" width="5" height="36"><animate attributeName="height" values="36;12;22;32;36" dur="1.5s" repeatCount="indefinite" /><animate attributeName="y" values="20;44;34;24;20" dur="1.5s" repeatCount="indefinite" /></rect>
+            <rect x="36" y="30" width="5" height="26"><animate attributeName="height" values="26;38;10;24;26" dur="0.7s" repeatCount="indefinite" /><animate attributeName="y" values="30;18;46;32;30" dur="0.7s" repeatCount="indefinite" /></rect>
+            <rect x="44" y="22" width="5" height="34"><animate attributeName="height" values="34;16;38;12;34" dur="1.1s" repeatCount="indefinite" /><animate attributeName="y" values="22;40;18;44;22" dur="1.1s" repeatCount="indefinite" /></rect>
+            <rect x="52" y="26" width="5" height="30"><animate attributeName="height" values="10;30;20;36;10" dur="0.8s" repeatCount="indefinite" /><animate attributeName="y" values="46;26;36;20;46" dur="0.8s" repeatCount="indefinite" /></rect>
+            <rect x="60" y="18" width="5" height="38"><animate attributeName="height" values="38;22;14;36;38" dur="1.3s" repeatCount="indefinite" /><animate attributeName="y" values="18;34;42;20;18" dur="1.3s" repeatCount="indefinite" /></rect>
+            <rect x="68" y="24" width="5" height="32"><animate attributeName="height" values="14;32;28;10;14" dur="1.0s" repeatCount="indefinite" /><animate attributeName="y" values="42;24;28;46;42" dur="1.0s" repeatCount="indefinite" /></rect>
+            <rect x="76" y="30" width="5" height="26"><animate attributeName="height" values="26;8;34;20;26" dur="0.6s" repeatCount="indefinite" /><animate attributeName="y" values="30;48;22;36;30" dur="0.6s" repeatCount="indefinite" /></rect>
+            <rect x="84" y="22" width="5" height="34"><animate attributeName="height" values="34;24;12;38;34" dur="1.4s" repeatCount="indefinite" /><animate attributeName="y" values="22;32;44;18;22" dur="1.4s" repeatCount="indefinite" /></rect>
+            <rect x="92" y="28" width="5" height="28"><animate attributeName="height" values="16;28;36;8;16" dur="0.85s" repeatCount="indefinite" /><animate attributeName="y" values="40;28;20;48;40" dur="0.85s" repeatCount="indefinite" /></rect>
+            <rect x="100" y="24" width="5" height="32"><animate attributeName="height" values="32;10;26;38;32" dur="1.1s" repeatCount="indefinite" /><animate attributeName="y" values="24;46;30;18;24" dur="1.1s" repeatCount="indefinite" /></rect>
+            <rect x="108" y="20" width="5" height="36"><animate attributeName="height" values="20;36;14;30;20" dur="0.95s" repeatCount="indefinite" /><animate attributeName="y" values="36;20;42;26;36" dur="0.95s" repeatCount="indefinite" /></rect>
+          </g>
+          <!-- Baseline -->
+          <line x1="8" y1="57" x2="120" y2="57" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" />
+        `;
+      }
+
+      screenSvg.innerHTML = innerHTML;
+    }
+
+    // Update details card in the right column
+    function updateDetailsPanel() {
+      const sys = systems[currentSystemIndex];
+
+      showcaseBadge.style.setProperty('--badge-bg', sys.badgeBg);
+      showcaseBadge.style.setProperty('--badge-color', sys.badgeColor);
+      showcaseBadge.style.setProperty('--badge-border', sys.badgeBorder);
+      badgeIcon.textContent = sys.badgeIcon;
+      badgeLabel.textContent = sys.badge;
+
+      showcaseTitle.textContent = sys.name;
+
+      if (sys.id === 'olobit') {
+        showcaseTagline.innerHTML = `${sys.tagline} <span class="mood-badge">Mood: ${olobitMoods[currentOlobitMoodIndex]}</span>`;
+      } else {
+        showcaseTagline.textContent = sys.tagline;
+      }
+
+      showcaseDesc.textContent = sys.desc;
+
+      showcaseFeatures.innerHTML = sys.features.map(feat => `
+        <div class="feature-bullet">
+          <span class="feature-bullet-icon" style="color: ${sys.color}">✓</span>
+          <span>${feat}</span>
+        </div>
+      `).join('');
+
+      showcaseActionBtn.href = sys.dashboardUrl;
+      showcaseActionBtn.style.background = `linear-gradient(135deg, ${sys.color} 0%, #3b82f6 100%)`;
+      showcaseActionBtn.style.boxShadow = `0 4px 12px ${sys.color}25`;
+      showcaseActionBtn.querySelector('span').textContent = sys.dashboardLabel;
+      dashboardLabel.textContent = `${sys.name} Web Control`;
+      dashboardHint.textContent = sys.dashboardHint;
+    }
+
+    // Initial setup
+    renderScreen();
+    updateNeoPixel();
+    updateDetailsPanel();
+  </script>
+</body>
+
+</html>
